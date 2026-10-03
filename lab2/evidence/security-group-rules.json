@@ -1,0 +1,15 @@
+[
+    {
+        "IpProtocol": "tcp",
+        "FromPort": 22,
+        "ToPort": 22,
+        "UserIdGroupPairs": [],
+        "IpRanges": [
+            {
+                "CidrIp": "216.208.194.11/32"
+            }
+        ],
+        "Ipv6Ranges": [],
+        "PrefixListIds": []
+    }
+]

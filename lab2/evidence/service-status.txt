@@ -1,0 +1,2 @@
+enabled
+acs730w+ /usr/bin/python3 -m http.server 80 --directory /opt/acs730-web
