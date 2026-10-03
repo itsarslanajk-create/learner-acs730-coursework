@@ -1,0 +1,4 @@
+<!doctype html>
+<html><head><title>ACS730 Lab 2</title></head>
+<body><h1>ACS730 Lab 2</h1>
+<p>Deployed by deploy-web.sh and kept alive by systemd.</p></body></html>
