@@ -31,9 +31,10 @@ resource "aws_security_group" "demo" {
   description = "ACS730 Lab 3 pipeline demo"
 
   tags = {
-    Name   = "acs730-lab3-demo"
-    Course = "ACS730"
-    Lab    = "3"
-    Owner  = "pipeline"
+    Name      = "acs730-lab3-demo"
+    Course    = "ACS730"
+    Lab       = "3"
+    Owner     = "pipeline"
+    ManagedBy = "github-actions"
   }
 }
