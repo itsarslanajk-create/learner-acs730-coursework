@@ -1,0 +1,4 @@
+terraform	Plan	2026-10-08T23:45:17.1074822Z Plan: 0 to add, 1 to change, 0 to destroy.
+terraform	Apply (only on push to main)	2026-10-08T23:45:20.7997986Z Plan: 0 to add, 1 to change, 0 to destroy.
+terraform	Apply (only on push to main)	2026-10-08T23:45:21.8360199Z aws_security_group.demo: Modifications complete after 1s [id=sg-02bdae3150936feec]
+terraform	Apply (only on push to main)	2026-10-08T23:45:22.0753185Z Apply complete! Resources: 0 added, 1 changed, 0 destroyed.

@@ -1,0 +1,27 @@
+[
+    [
+        "sg-02bdae3150936feec",
+        [
+            {
+                "Key": "Owner",
+                "Value": "pipeline"
+            },
+            {
+                "Key": "Name",
+                "Value": "acs730-lab3-demo"
+            },
+            {
+                "Key": "ManagedBy",
+                "Value": "github-actions"
+            },
+            {
+                "Key": "Course",
+                "Value": "ACS730"
+            },
+            {
+                "Key": "Lab",
+                "Value": "3"
+            }
+        ]
+    ]
+]
