@@ -1,4 +1,4 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
  
 # Least privilege from day one: SSH only from *your* current IP, not the world.

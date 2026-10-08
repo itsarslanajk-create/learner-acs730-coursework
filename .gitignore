@@ -18,3 +18,7 @@ credentials
 # Ansible / Packer working files
 *.retry
 packer_cache/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.pem
