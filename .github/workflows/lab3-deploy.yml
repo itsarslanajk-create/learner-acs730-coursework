@@ -1,0 +1,56 @@
+name: lab3-deploy
+
+on:
+  pull_request:
+    paths:
+      - "lab3/**"
+      - ".github/workflows/lab3-deploy.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "lab3/**"
+      - ".github/workflows/lab3-deploy.yml"
+
+concurrency:
+  group: lab3-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lab3
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v5
+
+      - name: Log in to AWS with the session secrets
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Show which AWS account we are in
+        run: aws sts get-caller-identity
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.16.5
+
+      - name: Connect to the shared state
+        run: terraform init -input=false
+
+      - name: Plan
+        run: terraform plan -input=false
+
+      - name: Apply (only on push to main)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve -input=false
