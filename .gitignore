@@ -22,3 +22,6 @@ packer_cache/
 *.tfstate
 *.tfstate.*
 *.pem
+__pycache__/
+*.pyc
+.pytest_cache/
