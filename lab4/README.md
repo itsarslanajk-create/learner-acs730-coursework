@@ -55,3 +55,19 @@ Runs: baseline 40053890389 (no caches), cache miss 40054975315 (caches just adde
 
 ## Experiments
 
+
+### Experiment 1: invert the layer order
+
+**Prediction:** if app.py is copied before requirements.txt and pip install, a one-word code change will invalidate the install layer, so the rebuild will reinstall every dependency and take several seconds instead of about one.
+
+**Result:** with COPY app.py moved above the requirements lines (my copy also kept the original COPY app.py lower down, which does not change the result), a one-word edit to app.py re-ran RUN pip install and the rebuild took 5.0 s, against 1.4 s with the shipped Dockerfile where pip install showed CACHED. Only the base and WORKDIR layers were still CACHED.
+
+**Why:** Docker reuses a layer only if that instruction and every instruction before it are unchanged. COPY app.py changes whenever the code changes, so whatever comes after it is rebuilt. Placing the rarely-changing dependency install before the frequently-changing source means every future code change costs one tiny COPY layer instead of a full reinstall.
+
+### Experiment 2: delete the .dockerignore
+
+**Prediction:** the build context will grow, but the slim image will not, because the slim Dockerfile copies two named files rather than the whole folder.
+
+**Result:** without .dockerignore the slim build transferred a 470 B context, the image stayed at 130 MB, and ls -a /app showed only app.py and requirements.txt. The .dockerignore was restored afterwards.
+
+**Why:** the slim Dockerfile uses COPY requirements.txt and COPY app.py, so only those two files can reach the image whatever the context holds, and BuildKit transfers only the files the COPY lines need. The naive Dockerfile is different: COPY . . copies everything in the context, so without .dockerignore the screenshots in evidence/, the README, the tests and the Dockerfiles themselves would all be baked into the naive image. .dockerignore protects against careless COPY . .; explicit COPY of named files protects regardless.
