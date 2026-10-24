@@ -35,3 +35,4 @@ The AWS-native equivalent of this pipeline is CodePipeline for the job graph, Co
 **Recommendation:** GitHub Actions for this course and for a team whose code already lives on GitHub: no cloud credentials are needed to build and publish, and it works in an Academy account. AWS-native becomes the better choice when images must stay inside AWS (ECR next to ECS or EKS, private networking, IAM-based audit) and the team can create IAM roles.
 
 ## Experiments
+
