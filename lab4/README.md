@@ -34,4 +34,24 @@ The AWS-native equivalent of this pipeline is CodePipeline for the job graph, Co
 
 **Recommendation:** GitHub Actions for this course and for a team whose code already lives on GitHub: no cloud credentials are needed to build and publish, and it works in an Academy account. AWS-native becomes the better choice when images must stay inside AWS (ECR next to ECS or EKS, private networking, IAM-based audit) and the team can create IAM roles.
 
+## CI timings: baseline, cache miss, cache hit
+
+Runs: baseline 40053890389 (no caches), cache miss 40054975315 (caches just added), cache hit 40055057767 (README-only change). The hit run's log shows "Cache restored from key: setup-python-...-pip-2c9ba5fb20a" for both Python versions and "importing cache manifest from gha" for the Docker build.
+
+| Step | Baseline | Cache miss | Cache hit | Worth it? |
+| --- | --- | --- | --- | --- |
+| pip install (test 3.11 / 3.12) | 5 s / 3 s | 3 s / 2 s | 2 s / 1 s | Yes, marginally |
+| docker build (build job) | 8 s (plain docker build) | 14 s + 2 s cache export | 10 s + 1 s cache export | No |
+| Whole workflow, wall clock | 52 s | 63 s | 82 s | n/a (dominated by runner start-up) |
+
+- **pip cache: worth it, marginally.** The install step dropped from 3-5 s to 1-2 s once the cache was restored. The gain is small because only three pinned packages are installed, but it costs nothing (one with: block) and grows with the dependency list. The key is the two requirements files, so it invalidates exactly when what gets installed changes.
+- **Docker layer cache: not worth it for this image.** Even on a confirmed hit the build step took 10 s plus 1 s exporting the cache, versus 8 s for a plain docker build with no cache. The image is 130 MB with a 6 MB dependency layer, so there is little to save, while buildx has to start a builder and import and export the cache manifest over the network every run. The comparison is not perfectly like-for-like (baseline used plain docker build, the cached runs use buildx), which is part of the point: switching to buildx to get the cache has its own cost. It would pay off for an image with a slow dependency or compile step.
+- **Whole workflow:** wall clock went up across the three runs (52 s, 63 s, 82 s) even though individual steps got faster. Each job waits for a fresh GitHub-hosted runner, and that queueing varies from run to run and is larger than anything either cache saves here, which is why the per-step numbers, not the total, are the evidence.
+
+## Why a composite action for one piece and a reusable workflow for the other
+
+- **Composite action (.github/actions/python-deps):** setting up Python, restoring the pip cache and installing dependencies are steps that must run on the same runner as the tests that use them, inside the test job, once per matrix cell. A composite action packages steps that run inside an existing job, so it is the right shape.
+- **Reusable workflow (.github/workflows/docker-build.yml):** building and pushing the image is a whole job with its own runner and needs packages: write, which the test job must not have. A reusable workflow packages entire jobs with their own permissions, so the push permission lives only in that job. In lab4-ci.yml the calling job (image) is the only job that widens past contents: read; every other job inherits read-only.
+
 ## Experiments
+
