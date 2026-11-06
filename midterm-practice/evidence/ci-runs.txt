@@ -1,0 +1,15 @@
+== CI
+completed	success	Task 5: remove hard-coded credential from deploy.sh, explain why dele…	Midterm Practice CI	main	push	42138087172	34s	2026-11-06T00:36:42Z
+== Terraform (LocalStack)
+completed	success	Task 3+4+5: fix subnet/ingress references, pin Terraform and AWS prov…	Midterm Practice Terraform (LocalStack)	main	push	42138040590	1m37s	2026-11-06T00:36:19Z
+== Terraform outputs
+plan and apply against LocalStack	Show outputs	2026-11-06T00:37:49.0469076Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/b248cf00-34dc-4fbf-8dda-f2a4ecad0e60
+plan and apply against LocalStack	Show outputs	2026-11-06T00:37:49.0469608Z ##[endgroup]
+plan and apply against LocalStack	Show outputs	2026-11-06T00:37:49.6057473Z artifact_bucket_name = "acs730-midterm-dev-artifacts-000000000000"
+plan and apply against LocalStack	Show outputs	2026-11-06T00:37:49.6058196Z provider_target = "http://localhost:4566"
+plan and apply against LocalStack	Show outputs	2026-11-06T00:37:49.6058513Z subnet_ids = {
+plan and apply against LocalStack	Show outputs	2026-11-06T00:37:49.6058790Z   "web-a" = "subnet-58c634ab"
+plan and apply against LocalStack	Show outputs	2026-11-06T00:37:49.6059076Z   "web-b" = "subnet-0307266b"
+plan and apply against LocalStack	Show outputs	2026-11-06T00:37:49.6059435Z }
+plan and apply against LocalStack	Show outputs	2026-11-06T00:37:49.6059644Z vpc_id = "vpc-a3db3782"
+plan and apply against LocalStack	Show outputs	2026-11-06T00:37:49.6059947Z web_security_group_id = "sg-aa21592a289be31f0"
