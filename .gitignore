@@ -25,3 +25,8 @@ packer_cache/
 __pycache__/
 *.pyc
 .pytest_cache/
+.terraform/
+*.tfstate
+*.tfstate.*
+tfplan
+crash.log
