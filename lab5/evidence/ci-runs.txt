@@ -1,0 +1,3 @@
+in_progress		Lab 5	lab5-ci	lab5	pull_request	42337748563	1m28s	2026-11-07T04:16:53Z
+completed	failure	Lab 5	lab5-ci	lab5	pull_request	42336982860	20s	2026-11-07T04:06:47Z
+completed	success	Lab 5	lab5-ci	lab5	pull_request	42336065035	2m7s	2026-11-07T03:54:17Z
