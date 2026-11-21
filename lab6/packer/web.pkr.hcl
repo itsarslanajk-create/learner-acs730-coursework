@@ -69,7 +69,7 @@ build {
 
   # The same role as the converge path, unchanged.
   provisioner "ansible" {
-    playbook_file    = var.playbook_file
+    playbook_file    = "${path.root}/${var.playbook_file}"
     user             = "ec2-user"
     use_proxy        = false
     ansible_env_vars = ["ANSIBLE_HOST_KEY_CHECKING=False"]
@@ -81,7 +81,7 @@ build {
 
   # Runs after the role, so /opt/acs730-web already exists.
   provisioner "file" {
-    source      = "files/index.html"
+    source      = "${path.root}/files/index.html"
     destination = "/tmp/baked.html"
   }
 
