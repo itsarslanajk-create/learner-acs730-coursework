@@ -1,0 +1,1 @@
+golden-ami: 22 seconds
