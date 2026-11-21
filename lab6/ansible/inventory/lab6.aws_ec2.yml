@@ -1,0 +1,16 @@
+---
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-east-1
+# Only this lab's instances, and only running ones.
+filters:
+  "tag:Lab": lab6
+  instance-state-name: running
+# Name each host by its instance id: that is what Session Manager connects to.
+hostnames:
+  - instance-id
+# Turn the Role tag into a group: Role=web becomes group "role_web".
+keyed_groups:
+  - key: tags.Role
+    prefix: role
+    separator: "_"
