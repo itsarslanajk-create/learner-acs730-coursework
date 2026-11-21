@@ -1,0 +1,39 @@
+[0m[1maws_security_group.web: Destroying... [id=sg-0f44d34e64389836e][0m[0m
+[0m[1maws_security_group.web: Destruction complete after 0s[0m
+[0m[1m[32m
+Destroy complete! Resources: 3 destroyed.
+[0msnapshot behind the AMI: snap-0306ba72e4938d366
+snap-0306ba72e4938d366
+{
+    "Return": true,
+    "DeleteSnapshotResults": []
+}
+deregistered ami-0de94ae4f3855cec7
+deleted snap-0306ba72e4938d366
+remove_bucket: acs730-lab6-ssm-073376610117
+
+== EC2 instances
+   i-04239dc301dd3e622  running  t3.micro  acs730-workstation   (your workstation -- keep this)
+
+== Your AMIs (and their snapshots)
+
+== Unattached EBS volumes
+
+== Snapshots you own
+
+== Non-default security groups
+   sg-0ef60391a6a6d0b6e  launch-wizard-2
+      -> aws ec2 delete-security-group --group-id sg-0ef60391a6a6d0b6e
+   sg-04a98f7abc7caf8b1  launch-wizard-1
+      -> aws ec2 delete-security-group --group-id sg-04a98f7abc7caf8b1
+   sg-0d32d4b68ace1f46b  launch-wizard-4
+      -> aws ec2 delete-security-group --group-id sg-0d32d4b68ace1f46b
+   sg-02bdae3150936feec  acs730-lab3-demo-20166624e57eb0c5530acf0a51
+      -> aws ec2 delete-security-group --group-id sg-02bdae3150936feec
+   sg-03b890056cf2fa82d  launch-wizard-3
+      -> aws ec2 delete-security-group --group-id sg-03b890056cf2fa82d
+
+== Terraform state files that still track resources
+
+Review the items above. This script deleted nothing.
+
