@@ -1,0 +1,7 @@
+===== destroy dev
+Destroy complete! Resources: 10 destroyed.
+===== destroy staging
+Destroy complete! Resources: 10 destroyed.
+[0m===== destroy prod
+Destroy complete! Resources: 10 destroyed.
+[0m===== leftovers tagged Assignment=assignment1 (should be empty)
