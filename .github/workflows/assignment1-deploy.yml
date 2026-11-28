@@ -1,0 +1,79 @@
+name: assignment1-deploy
+
+on:
+  pull_request:
+    paths: ['assignment1/**', '.github/workflows/assignment1-deploy.yml']
+  push:
+    branches: [main]
+    paths: ['assignment1/**', '.github/workflows/assignment1-deploy.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  # Pull requests: no credentials at all, only format and validate.
+  checks:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.3
+      - run: terraform fmt -check -recursive assignment1/terraform
+      - name: validate each environment
+        run: |
+          for env in dev staging prod; do
+            terraform -chdir=assignment1/terraform/$env init -backend=false -input=false >/dev/null
+            terraform -chdir=assignment1/terraform/$env validate
+          done
+
+  # Merge to main: staging applies with no human in the loop.
+  staging:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: staging
+    defaults:
+      run:
+        working-directory: assignment1/terraform/staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.3
+          terraform_wrapper: false
+      - run: terraform init -input=false
+      - run: terraform apply -input=false -auto-approve
+      - run: terraform output
+
+  # Prod: waits for a required reviewer; the environment's branch policy
+  # only allows main. Runs only after staging succeeded.
+  prod:
+    if: github.event_name == 'push'
+    needs: staging
+    runs-on: ubuntu-latest
+    environment: prod
+    defaults:
+      run:
+        working-directory: assignment1/terraform/prod
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.3
+          terraform_wrapper: false
+      - run: terraform init -input=false
+      - run: terraform apply -input=false -auto-approve
+      - run: terraform output
