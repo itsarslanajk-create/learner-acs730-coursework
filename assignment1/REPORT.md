@@ -87,3 +87,5 @@ All three environments were destroyed, 10 resources each, and a final check foun
 ## Conclusion
 
 The two things I learned in this assignment are that state keys keep environments apart and that secrets should be scoped to the environment that needs them. Separate state keys mean an apply in one environment cannot break another, and environment-scoped secrets mean credentials reach only the job that should have them; OIDC would remove the keys entirely. Next time I would use the OIDC role in a real account instead of session keys, add a terraform plan step on pull requests so reviewers can see what will change before they approve, and watch the workstation's disk space by sharing one Terraform provider cache, since the disk filled up twice during this assignment.
+
+Note: after the first teardown, pushing the evidence and this report to main re-triggered the deploy workflow (it is scoped to assignment1/**), which re-created staging automatically. I cancelled the waiting prod run without approving it, destroyed staging again, and pushed the final files with [skip ci] so no further deployment ran. The appended section of destroy-complete.txt records it.

@@ -5,3 +5,5 @@ Destroy complete! Resources: 10 destroyed.
 [0m===== destroy prod
 Destroy complete! Resources: 10 destroyed.
 [0m===== leftovers tagged Assignment=assignment1 (should be empty)
+===== re-destroy staging (re-created by a later push to main; see REPORT teardown note)
+[0m===== leftovers tagged Assignment=assignment1 (should be empty)
